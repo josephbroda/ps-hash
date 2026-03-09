@@ -3,9 +3,12 @@
 #Compares the hash of a user-selected file to a provided hash value in PowerShell using a user-selected hashing algorithm.
 
 #Get user input for file and official hash
-$filePath = Read-Host "Enter the full path to the file"
-$expectedHash = (Read-Host "Paste the expected hash here").Trim()
-$choice = Read-Host "What algorithm is the hash? `n1. MD5`n2. SHA1 `n3. SHA256`n"
+$filePath = (Read-Host "Enter the full path to the file").Replace('"', "")
+if (-not (Test-Path $filePath)) { 
+    Write-Host "Error: File not found!" -ForegroundColor Red; exit 
+}
+$expectedHash = (Read-Host "Paste the expected hash here").Trim().ToUpper()
+$choice = Read-Host "What algorithm? `n1. MD5`n2. SHA1`n3. SHA256"
 
 #Select hash algorithm
 $selectedAlgorithm = switch ($choice) {
